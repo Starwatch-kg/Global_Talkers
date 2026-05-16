@@ -1,8 +1,8 @@
+import os
 import asyncio
 from os import getenv
 from dotenv import load_dotenv
 from aiohttp import web
-
 from aiogram import Bot, Dispatcher, Router, F
 from aiogram.types import Message, CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.filters import CommandStart
@@ -308,10 +308,12 @@ async def main():
     
     runner = web.AppRunner(app)
     await runner.setup()
-    site = web.TCPSite(runner, '0.0.0.0', 8080)
+    
+    port = int(os.environ.get('PORT', 8080))
+    site = web.TCPSite(runner, '0.0.0.0', port)
     await site.start()
 
-    print("Обманка запущена, включаем бота...")
+    print(f"Обманка запущена на порту {port}, включаем бота...")
     await dp.start_polling(bot)
 
 if __name__ == "__main__":

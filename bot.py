@@ -55,7 +55,10 @@ async def start_cmd(message: Message, state: FSMContext):
         [InlineKeyboardButton(text="Хочу учиться (Ученик)", callback_data="role_student")]
     ])
     
-    await message.answer(text, reply_markup=markup)
+    try:
+        await message.answer(text, reply_markup=markup)
+    except Exception as e:
+        print(f"Не удалось отправить приветствие пользователю {message.from_user.id}: {e}")
 
 # === ОБРАБОТКА КНОПОК МЕНЮ ===
 @router.callback_query(F.data == "role_teacher")
